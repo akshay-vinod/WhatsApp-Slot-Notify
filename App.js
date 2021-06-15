@@ -6,7 +6,7 @@ const express = require("express");
 const axios = require("axios");
 //for current date in india
 const moment = require("moment");
-const date = moment().utcOffset("+05:30").format("DD-MM-YYYY");
+const date = moment().add(1, "days").utcOffset("+05:30").format("DD-MM-YYYY");
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
 const client = require("twilio")(accountSid, authToken);
@@ -26,17 +26,17 @@ app.listen("3000", () => {
   console.log("app running on port 3000");
 });
 function getSlot() {
-  sent = false;
   axios
     .get(
-      `https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByDistrict?district_id=391&date=${date}`
+      `https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByDistrict?district_id=232&date=${date}`
     )
     .then((response) => {
       // handle success
       if (response.data.length !== 0) {
         slots = response.data.sessions;
+        message = "";
         slots.map((items) => {
-          if (items.block_name === "Jaoli" && items.available_capacity !== 0) {
+          if (items.block_name === "Ghat" && items.available_capacity !== 0) {
             sent = true;
             message =
               message +
@@ -53,7 +53,7 @@ function getSlot() {
 setInterval(() => {
   console.log("running successfully");
   getSlot();
-  if (sent) {
+  if (message.length >= 20) {
     client.messages
       .create({
         body: `${message}`,
