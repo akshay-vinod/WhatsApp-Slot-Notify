@@ -16,8 +16,6 @@ let slots = [];
 
 let message = "Slots Available:\n";
 
-let sent = false;
-
 app.get("", (req, res) => {
   res.send("working");
 });
@@ -28,7 +26,7 @@ app.listen("3000", () => {
 function getSlot() {
   axios
     .get(
-      `https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByDistrict?district_id=232&date=${date}`
+      `https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByDistrict?district_id=297&date=${date}`
     )
     .then((response) => {
       // handle success
@@ -36,8 +34,10 @@ function getSlot() {
         slots = response.data.sessions;
         message = "";
         slots.map((items) => {
-          if (items.block_name === "Ghat" && items.available_capacity !== 0) {
-            sent = true;
+          if (
+            items.block_name === "Pinarayi" &&
+            items.available_capacity !== 0
+          ) {
             message =
               message +
               `${items.name} ${items.min_age_limit} ${items.vaccine} ▶${items.available_capacity} \n`;
