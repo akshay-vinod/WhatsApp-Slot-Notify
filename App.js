@@ -29,17 +29,14 @@ function getSlot() {
   sent = false;
   axios
     .get(
-      `https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByDistrict?district_id=297&date=${date}`
+      `https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByDistrict?district_id=391&date=${date}`
     )
     .then((response) => {
       // handle success
       if (response.data.length !== 0) {
         slots = response.data.sessions;
         slots.map((items) => {
-          if (
-            items.block_name === "Pinarayi" &&
-            items.available_capacity !== 0
-          ) {
+          if (items.block_name === "Jaoli" && items.available_capacity !== 0) {
             sent = true;
             message =
               message +
